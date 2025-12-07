@@ -1,0 +1,11 @@
+$NetBSD: distinfo,v 1.12 2025/02/07 12:36:24 pho Exp $
+
+BLAKE2s (quickjs-2025-09-13-2.tar.xz) = cdfd6d68e73acbcb7578e68dff1752438e760f31884e50f2f902a2068558385b
+SHA512 (quickjs-2025-09-13-2.tar.xz) = ea20d9ce8b6e09e58f1c3dc51086cd23c1ca18de7b5711bbd88e86dbbba2589b950acd22003e33fbed94dd4ec3e1828e6af5342ea9c62024cce7ca11eca1029c
+Size (quickjs-2025-09-13-2.tar.xz) = 596244 bytes
+SHA1 (patch-Makefile) = 212b456a46b87ba5054b9270bc87cae977456159
+SHA1 (patch-qjs.c) = bfabed96cfdd40214fede3069485394af2faef4f
+SHA1 (patch-qjsc.c) = bffd0222579f3996bc21116694343a7dd65d8f33
+SHA1 (patch-quickjs-libc.c) = 39c2b553ef04b308e7c477590edd345b62acc528
+SHA1 (patch-quickjs.c) = 7e8b8e9370bea8c654fb766217a6021c245fcee9
+SHA1 (patch-tests_test__builtin.js) = 1763d4995805407a15f467c81d2ec92ee632e135
