@@ -1,4 +1,4 @@
-$NetBSD: patch-qjsc.c,v 1.3 2025/11/12 11:49:38 leot Exp $
+$NetBSD: patch-qjsc.c,v 1.2 2022/01/30 10:55:03 he Exp $
 
 Portability patch for NetBSD.
 

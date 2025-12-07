@@ -1,8 +1,6 @@
-$NetBSD: patch-quickjs.c,v 1.6 2025/11/12 11:58:20 leot Exp $
+$NetBSD: patch-quickjs.c,v 1.4 2025/02/07 12:36:24 pho Exp $
 
-- Portability patch for NetBSD.
-- Backport commit c6fe5a98fd3ef3b7064e6e0145dfebfe12449fea to fix
-  CVE-2025-12745.
+Portability patch for NetBSD.
 
 --- quickjs.c.orig	2025-09-13 08:48:28.000000000 +0000
 +++ quickjs.c
@@ -31,12 +29,3 @@ $NetBSD: patch-quickjs.c,v 1.6 2025/11/12 11:58:20 leot Exp $
      return 0;
  #elif defined(__linux__) || defined(__GLIBC__)
      return malloc_usable_size((void *)ptr);
-@@ -52988,7 +52996,7 @@ static JSValue js_array_buffer_slice(JSC
-         goto fail;
-     }
-     /* must test again because of side effects */
--    if (abuf->detached) {
-+    if (abuf->detached || abuf->byte_length < start + new_len) {
-         JS_ThrowTypeErrorDetachedArrayBuffer(ctx);
-         goto fail;
-     }

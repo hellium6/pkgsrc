@@ -1,10 +1,10 @@
-$NetBSD: patch-Makefile,v 1.7 2025/11/12 11:49:38 leot Exp $
+$NetBSD: patch-Makefile,v 1.6 2025/02/07 12:36:24 pho Exp $
 
 Portability patch for NetBSD.
 
 --- Makefile.orig	2025-09-13 08:48:28.000000000 +0000
 +++ Makefile
-@@ -22,10 +22,14 @@
+@@ -22,9 +22,13 @@
  # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  # THE SOFTWARE.
  
@@ -13,29 +13,35 @@ Portability patch for NetBSD.
 +ifeq ($(OPSYS),Darwin)
  CONFIG_DARWIN=y
  endif
--ifeq ($(shell uname -s),FreeBSD)
 +ifeq ($(OPSYS),NetBSD)
 +CONFIG_NETBSD=y
 +endif
-+ifeq ($(OPSYS),FreeBSD)
+ ifeq ($(shell uname -s),FreeBSD)
  CONFIG_FREEBSD=y
  endif
- # Windows cross compilation from Linux
-@@ -77,6 +81,13 @@ CONFIG_CLANG=y
- CONFIG_DEFAULT_AR=y
+@@ -34,7 +38,9 @@ endif
+ # to /usr/x86_64-w64-mingw32/lib/libwinpthread-1.dll)
+ #CONFIG_WIN32=y
+ # use link time optimization (smaller and faster executables but slower build)
+-#CONFIG_LTO=y
++ifndef CONFIG_NETBSD
++CONFIG_LTO=y
++endif
+ # consider warnings as errors (for development)
+ #CONFIG_WERROR=y
+ # force 32 bit build on x86_64
+@@ -78,6 +84,10 @@ CONFIG_DEFAULT_AR=y
  CONFIG_LTO=
  endif
-+ifdef CONFIG_NETBSD
-+CONFIG_LTO=
-+endif
-+
+ 
 +ifndef CONFIG_NETBSD
 +CONFIG_LDL=y
 +endif
- 
++
  ifdef CONFIG_WIN32
    ifdef CONFIG_M32
-@@ -243,11 +254,17 @@ QJS_LIB_OBJS=$(OBJDIR)/quickjs.o $(OBJDI
+     CROSS_PREFIX?=i686-w64-mingw32-
+@@ -243,12 +253,18 @@ QJS_LIB_OBJS=$(OBJDIR)/quickjs.o $(OBJDI
  
  QJS_OBJS=$(OBJDIR)/qjs.o $(OBJDIR)/repl.o $(QJS_LIB_OBJS)
  
@@ -50,11 +56,13 @@ Portability patch for NetBSD.
 +ifndef CONFIG_NETBSD
  LIBS+=-ldl
  endif
+-LIBS+=$(EXTRA_LIBS)
++LIBS+=-lpthread
 +endif
- LIBS+=$(EXTRA_LIBS)
  
  $(OBJDIR):
-@@ -285,6 +302,9 @@ QJSC_DEFINES:=-DCONFIG_CC=\"$(QJSC_CC)\"
+ 	mkdir -p $(OBJDIR) $(OBJDIR)/examples $(OBJDIR)/tests
+@@ -285,6 +301,9 @@ QJSC_DEFINES:=-DCONFIG_CC=\"$(QJSC_CC)\"
  ifdef CONFIG_LTO
  QJSC_DEFINES+=-DCONFIG_LTO
  endif
@@ -64,7 +72,7 @@ Portability patch for NetBSD.
  QJSC_HOST_DEFINES:=-DCONFIG_CC=\"$(HOST_CC)\" -DCONFIG_PREFIX=\"$(PREFIX)\"
  
  $(OBJDIR)/qjsc.o: CFLAGS+=$(QJSC_DEFINES)
-@@ -368,10 +388,9 @@ install: all
+@@ -368,10 +387,9 @@ install: all
  	mkdir -p "$(DESTDIR)$(PREFIX)/bin"
  	$(STRIP) qjs$(EXE) qjsc$(EXE)
  	install -m755 qjs$(EXE) qjsc$(EXE) "$(DESTDIR)$(PREFIX)/bin"

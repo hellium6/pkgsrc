@@ -1,4 +1,4 @@
-$NetBSD: patch-qjs.c,v 1.4 2025/11/12 11:49:38 leot Exp $
+$NetBSD: patch-qjs.c,v 1.3 2025/02/07 12:36:24 pho Exp $
 
 Portability patch for NetBSD.
 
